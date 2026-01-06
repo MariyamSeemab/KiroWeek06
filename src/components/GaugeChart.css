@@ -1,0 +1,366 @@
+/* Gauge Chart Component Styles */
+
+.gauge-chart {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.gauge-chart:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Size Variants */
+
+.gauge-small {
+  max-width: 200px;
+  padding: 0.75rem;
+}
+
+.gauge-small .gauge-canvas {
+  width: 150px;
+  height: 90px;
+}
+
+.gauge-medium {
+  max-width: 250px;
+}
+
+.gauge-large {
+  max-width: 300px;
+  padding: 1.5rem;
+}
+
+.gauge-large .gauge-canvas {
+  width: 250px;
+  height: 150px;
+}
+
+/* Header */
+
+.gauge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.gauge-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0;
+}
+
+.gauge-small .gauge-title {
+  font-size: 0.875rem;
+}
+
+.gauge-large .gauge-title {
+  font-size: 1.125rem;
+}
+
+.gauge-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.status-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4a5568;
+  text-transform: uppercase;
+}
+
+/* Gauge Container */
+
+.gauge-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.gauge-canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.gauge-value {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.value-number {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2d3748;
+  line-height: 1;
+}
+
+.gauge-small .value-number {
+  font-size: 1.25rem;
+}
+
+.gauge-large .value-number {
+  font-size: 1.75rem;
+}
+
+.value-unit {
+  display: block;
+  font-size: 0.75rem;
+  color: #718096;
+  font-weight: 500;
+  margin-top: 0.125rem;
+}
+
+/* Footer */
+
+.gauge-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.gauge-range {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.75rem;
+  color: #718096;
+}
+
+.gauge-timestamp {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.625rem;
+  color: #a0aec0;
+  margin-top: 0.25rem;
+}
+
+.timestamp-icon {
+  font-size: 0.75rem;
+}
+
+/* Legend */
+
+.gauge-legend {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.legend-item:last-child {
+  margin-bottom: 0;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.legend-color.green {
+  background: #48bb78;
+}
+
+.legend-color.yellow {
+  background: #ed8936;
+}
+
+.legend-color.red {
+  background: #f56565;
+}
+
+.legend-text {
+  font-size: 0.75rem;
+  color: #4a5568;
+}
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+  .gauge-chart {
+    padding: 0.75rem;
+  }
+  
+  .gauge-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .gauge-status {
+    align-self: flex-end;
+  }
+  
+  .gauge-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .gauge-timestamp {
+    align-self: flex-end;
+  }
+  
+  .gauge-legend {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  
+  .legend-item {
+    margin-bottom: 0;
+  }
+}
+
+/* Touch-friendly interactions */
+
+@media (hover: none) and (pointer: coarse) {
+  .gauge-chart {
+    padding: 1rem;
+  }
+  
+  .gauge-title {
+    font-size: 1.1rem;
+  }
+  
+  .value-number {
+    font-size: 1.75rem;
+  }
+  
+  .status-text,
+  .legend-text {
+    font-size: 0.875rem;
+  }
+}
+
+/* Loading State */
+
+.gauge-chart.loading {
+  opacity: 0.7;
+}
+
+.gauge-chart.loading .gauge-canvas {
+  filter: grayscale(0.5);
+}
+
+.gauge-chart.loading .status-indicator {
+  animation: pulse 1s infinite;
+}
+
+/* Error State */
+
+.gauge-chart.error {
+  border-color: #feb2b2;
+  background: #fef5e7;
+}
+
+.gauge-chart.error .gauge-title {
+  color: #742a2a;
+}
+
+.gauge-chart.error .status-indicator {
+  background: #f56565;
+}
+
+/* Offline State */
+
+.gauge-chart.offline {
+  opacity: 0.6;
+  filter: grayscale(0.3);
+}
+
+.gauge-chart.offline::after {
+  content: 'OFFLINE';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  z-index: 10;
+}
+
+/* Animation for value changes */
+
+.gauge-chart {
+  transition: all 0.3s ease;
+}
+
+.value-number {
+  transition: all 0.3s ease;
+}
+
+.status-indicator {
+  transition: background-color 0.3s ease;
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: high) {
+  .gauge-chart {
+    border-width: 2px;
+  }
+  
+  .status-indicator {
+    border: 2px solid currentColor;
+  }
+  
+  .legend-color {
+    border: 1px solid #000;
+  }
+}
+
+/* Reduced motion support */
+
+@media (prefers-reduced-motion: reduce) {
+  .status-indicator {
+    animation: none;
+  }
+  
+  .gauge-chart,
+  .value-number,
+  .status-indicator {
+    transition: none;
+  }
+}

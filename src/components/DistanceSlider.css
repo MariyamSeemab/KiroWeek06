@@ -1,0 +1,761 @@
+/* Distance Slider - Progressive Visual Feedback for Farmers */
+
+.distance-slider {
+  width: 100%;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(254, 243, 199, 0.1), rgba(245, 158, 11, 0.1));
+  border: 3px solid rgba(245, 158, 11, 0.3);
+  border-radius: 1.5rem;
+  box-shadow: 0 15px 35px rgba(245, 158, 11, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.distance-slider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #F59E0B, #FCD34D, #F59E0B);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.distance-slider.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  filter: grayscale(50%);
+}
+
+/* Vernacular header with transport icon */
+.distance-slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.distance-slider-label {
+  font-weight: 600;
+  color: #1E293B;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Large touch-friendly input */
+.distance-input-group {
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.distance-input-group:focus-within {
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+.distance-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  text-align: right;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1E293B;
+  outline: none;
+}
+
+.distance-unit {
+  padding: 0.75rem 1rem;
+  background: #f8fafc;
+  color: #64748B;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-left: 1px solid #e2e8f0;
+  min-width: 50px;
+  text-align: center;
+}
+
+/* Progressive slider with semantic colors */
+.slider-container {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.slider-track {
+  position: relative;
+  height: 12px;
+  background: rgba(107, 114, 128, 0.3);
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  border: 2px solid rgba(254, 243, 199, 0.3);
+}
+
+.slider-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #059669 0%, #F59E0B 50%, #EF4444 100%);
+  border-radius: 6px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+}
+
+/* Large thumb for mobile */
+.slider {
+  position: absolute;
+  top: -12px;
+  left: 0;
+  width: 100%;
+  height: 36px;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+  border: 3px solid #FEF3C7;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 12px 30px rgba(245, 158, 11, 0.6);
+}
+
+.slider.dragging::-webkit-slider-thumb {
+  transform: scale(1.3);
+  box-shadow: 0 15px 40px rgba(245, 158, 11, 0.8);
+  background: linear-gradient(135deg, #D97706, #B45309);
+}
+
+.slider::-moz-range-thumb {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+  border: 3px solid #FEF3C7;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+  transition: all 0.3s ease;
+}
+
+/* Vernacular distance labels */
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: #FCD34D;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Real-time distance feedback with counting animation */
+.distance-feedback {
+  margin-bottom: 2rem;
+}
+
+.distance-category {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.5rem;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 1rem;
+  border: 2px solid;
+  transition: all 0.3s ease;
+}
+
+.category-badge {
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 2px solid;
+  transition: all 0.3s ease;
+  min-width: 140px;
+  justify-content: center;
+}
+
+.category-badge.green {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #bbf7d0;
+}
+
+.category-badge.green::before {
+  content: '✅';
+  font-size: 1.25rem;
+}
+
+.distance-category.green {
+  border-color: #059669;
+  background: rgba(5, 150, 105, 0.2);
+}
+
+.category-badge.orange {
+  background: #fed7aa;
+  color: #9a3412;
+  border-color: #fdba74;
+}
+
+.category-badge.orange::before {
+  content: '⚠️';
+  font-size: 1.25rem;
+}
+
+.distance-category.orange {
+  border-color: #F59E0B;
+  background: rgba(245, 158, 11, 0.2);
+}
+
+.category-badge.red {
+  background: #fecaca;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
+.category-badge.red::before {
+  content: '🚨';
+  font-size: 1.25rem;
+}
+
+.distance-category.red {
+  border-color: #EF4444;
+  background: rgba(239, 68, 68, 0.2);
+  animation: danger-glow 2s infinite;
+}
+
+@keyframes danger-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes danger-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(239, 68, 68, 0.6); }
+}
+
+.category-description {
+  color: #FEF3C7;
+  font-size: 1rem;
+  font-weight: 600;
+  flex: 1;
+}
+
+/* Vernacular logistics cost with counting animation */
+.logistics-cost {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(31, 41, 55, 0.8));
+  border-radius: 1rem;
+  border-left: 4px solid #F59E0B;
+  border: 2px solid rgba(245, 158, 11, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.logistics-cost::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(245, 158, 11, 0.1) 50%, transparent 70%);
+  animation: cost-shine 3s ease-in-out infinite;
+}
+
+@keyframes cost-shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.cost-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(254, 243, 199, 0.1);
+  border-radius: 0.75rem;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  z-index: 1;
+  position: relative;
+  min-height: 60px;
+}
+
+.cost-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Vernacular cost labels */
+.cost-label {
+  font-size: 1rem;
+  color: #FCD34D;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cost-label::before {
+  font-size: 1.25rem;
+}
+
+.cost-item:nth-child(1) .cost-label::before {
+  content: '🚛'; /* Mandi Transport */
+}
+
+.cost-item:nth-child(2) .cost-label::before {
+  content: '⛽'; /* Fuel Cost */
+}
+
+.cost-item:nth-child(3) .cost-label::before {
+  content: '⏰'; /* Time Cost */
+}
+
+/* Counting animation for cost values */
+.cost-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.cost-value.counting {
+  animation: count-up 0.6s ease-out;
+}
+
+@keyframes count-up {
+  0% { 
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.9;
+  }
+  100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.cost-value.green {
+  color: #10B981;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+.cost-value.orange {
+  color: #F59E0B;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.cost-value.red {
+  color: #EF4444;
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+  animation: cost-warning 2s infinite;
+}
+
+@keyframes cost-warning {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.cost-breakdown {
+  margin-top: 0.5rem;
+}
+
+.cost-formula {
+  color: #64748B;
+  font-size: 0.75rem;
+  font-family: 'Courier New', monospace;
+  background: #f8fafc;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid #e2e8f0;
+}
+
+/* Visual distance markers with icons */
+.distance-markers {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 1rem;
+  border: 2px solid rgba(245, 158, 11, 0.3);
+}
+
+.marker-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.marker:hover {
+  transform: translateY(-2px);
+  border-color: #F59E0B;
+}
+
+.marker-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-bottom: 0.75rem;
+  border: 3px solid #FEF3C7;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.marker.near .marker-dot {
+  background: linear-gradient(135deg, #059669, #047857);
+  box-shadow: 0 0 20px rgba(5, 150, 105, 0.4);
+}
+
+.marker.medium .marker-dot {
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+}
+
+.marker.far .marker-dot {
+  background: linear-gradient(135deg, #EF4444, #DC2626);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+.marker-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #FEF3C7;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.marker-distance {
+  font-size: 0.75rem;
+  color: #FCD34D;
+  font-weight: 600;
+}
+
+/* Distance warning with pulsing effect */
+.distance-warning {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #EF4444, #DC2626);
+  border: 3px solid #FEE2E2;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  color: #FEF3C7;
+  animation: warning-pulse 2s infinite;
+}
+
+@keyframes warning-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+    transform: scale(1.02);
+  }
+}
+
+.warning-icon {
+  font-size: 2rem;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.warning-text {
+  color: #FEF3C7;
+  font-size: 1rem;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Distance impact with vernacular icons */
+.distance-impact {
+  border-top: 3px solid rgba(245, 158, 11, 0.3);
+  padding-top: 2rem;
+}
+
+.impact-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #FCD34D;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.impact-title::before {
+  content: '📊';
+  font-size: 1.5rem;
+}
+
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.impact-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: rgba(254, 243, 199, 0.1);
+  border-radius: 1rem;
+  border: 2px solid rgba(245, 158, 11, 0.3);
+  transition: all 0.3s ease;
+  min-height: 80px;
+}
+
+.impact-item:hover {
+  border-color: #F59E0B;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+}
+
+.impact-icon {
+  font-size: 2rem;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+  background: rgba(254, 243, 199, 0.2);
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  border: 2px solid rgba(254, 243, 199, 0.3);
+}
+
+.impact-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.impact-label {
+  font-size: 0.875rem;
+  color: #FCD34D;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.impact-value {
+  font-size: 1.125rem;
+  font-weight: 800;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.impact-value.green {
+  color: #10B981;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+.impact-value.orange {
+  color: #F59E0B;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.impact-value.red {
+  color: #EF4444;
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}
+
+/* Debounced calculation indicator */
+.calculating {
+  position: relative;
+  overflow: hidden;
+}
+
+.calculating::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.3), transparent);
+  animation: calculating-sweep 1s infinite;
+}
+
+@keyframes calculating-sweep {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Mobile-First Responsive Design */
+@media (max-width: 768px) {
+  .distance-slider {
+    padding: 2rem 1.5rem;
+  }
+  
+  .distance-slider-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .distance-input-group {
+    align-self: stretch;
+    justify-content: center;
+  }
+  
+  .distance-input {
+    width: 120px;
+    font-size: 1.5rem;
+    padding: 1rem 1.25rem;
+  }
+  
+  .marker-group {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .marker {
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+  
+  .impact-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .distance-category {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .cost-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+    padding: 1.25rem;
+  }
+}
+
+/* Touch-friendly interactions for budget smartphones */
+@media (hover: none) and (pointer: coarse) {
+  .slider::-webkit-slider-thumb {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .distance-input {
+    padding: 1.25rem 1.5rem;
+    font-size: 1.5rem;
+    min-height: 70px;
+  }
+  
+  .impact-item {
+    padding: 1.5rem;
+    min-height: 100px;
+  }
+  
+  .cost-item {
+    padding: 1.25rem 1.5rem;
+    min-height: 80px;
+  }
+}
+
+/* High contrast mode for sunlight visibility */
+@media (prefers-contrast: high) {
+  .distance-slider {
+    border-width: 4px;
+    background: #000000;
+  }
+  
+  .distance-input {
+    border-width: 3px;
+    background: #FFFFFF;
+    color: #000000;
+  }
+  
+  .logistics-cost,
+  .distance-markers,
+  .impact-item {
+    border-width: 3px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .slider-progress,
+  .cost-value,
+  .marker,
+  .impact-item {
+    transition: none;
+  }
+  
+  .shimmer,
+  .cost-shine,
+  .danger-pulse,
+  .danger-glow,
+  .count-up,
+  .cost-warning,
+  .warning-pulse,
+  .calculating-sweep {
+    animation: none;
+  }
+}

@@ -1,0 +1,80 @@
+# Docker Compose configuration for Smart-Silo Storage Referee
+
+version: '3.8'
+
+services:
+  # Main application
+  smart-silo-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: smart-silo-referee
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - smart-silo-network
+
+  # Redis for caching (optional)
+  redis:
+    image: redis:7-alpine
+    container_name: smart-silo-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    networks:
+      - smart-silo-network
+
+  # Mock API server for development
+  mock-api:
+    image: node:18-alpine
+    container_name: smart-silo-mock-api
+    working_dir: /app
+    volumes:
+      - ./mock-api:/app
+    ports:
+      - "8000:8000"
+    command: sh -c "npm install && npm start"
+    environment:
+      - NODE_ENV=development
+      - PORT=8000
+    restart: unless-stopped
+    networks:
+      - smart-silo-network
+
+  # Mock IoT WebSocket server
+  mock-iot:
+    image: node:18-alpine
+    container_name: smart-silo-mock-iot
+    working_dir: /app
+    volumes:
+      - ./mock-iot:/app
+    ports:
+      - "8001:8001"
+    command: sh -c "npm install && npm start"
+    environment:
+      - NODE_ENV=development
+      - PORT=8001
+    restart: unless-stopped
+    networks:
+      - smart-silo-network
+
+volumes:
+  redis_data:
+    driver: local
+
+networks:
+  smart-silo-network:
+    driver: bridge
