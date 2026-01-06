@@ -1,25 +1,9 @@
 {
   "version": 2,
   "name": "smart-silo-referee",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
-  "devCommand": "npm run dev",
   "framework": "vite",
   "rewrites": [
     {
@@ -61,12 +45,8 @@
     }
   ],
   "env": {
-    "NODE_ENV": "production"
-  },
-  "build": {
-    "env": {
-      "VITE_APP_NAME": "Smart Silo Referee",
-      "VITE_APP_DESCRIPTION": "AI-powered storage decisions for optimal crop preservation"
-    }
+    "NODE_ENV": "production",
+    "VITE_APP_NAME": "Smart Silo Referee",
+    "VITE_APP_DESCRIPTION": "AI-powered storage decisions for optimal crop preservation"
   }
-}v
+}vv
